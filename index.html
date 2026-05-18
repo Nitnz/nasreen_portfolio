@@ -649,23 +649,32 @@
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   /* ── MOBILE MENU PANEL ── */
+  /* Keep always in DOM — use visibility so CSS transitions work on mobile */
   .mobile-menu {
-    display: none;
     position: fixed;
     top: 0; right: 0;
     width: min(80vw, 300px);
     height: 100%;
-    background: rgba(253,252,255,0.97);
+    background: rgba(253,252,255,0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: 150;
     padding: 90px 2rem 2rem;
     border-left: 1px solid var(--border);
-    box-shadow: -8px 0 40px rgba(169,157,224,0.12);
-    transform: translateX(100%);
-    transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -8px 0 40px rgba(169,157,224,0.15);
+    transform: translateX(110%);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.38s cubic-bezier(0.4,0,0.2,1),
+                visibility 0s linear 0.38s;
   }
-  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu.open {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.38s cubic-bezier(0.4,0,0.2,1),
+                visibility 0s linear 0s;
+  }
 
   .mobile-links { list-style: none; display: flex; flex-direction: column; gap: 0; }
 
@@ -678,28 +687,35 @@
     padding: 1rem 0;
     border-bottom: 1px solid var(--border);
     opacity: 0;
-    transform: translateX(24px);
-    transition: color 0.2s, padding-left 0.2s,
-                opacity 0.35s ease, transform 0.35s ease;
+    transform: translateX(20px);
+    transition: color 0.2s ease, padding-left 0.2s ease,
+                opacity 0.3s ease, transform 0.3s ease;
   }
   .mobile-menu.open .mobile-link { opacity: 1; transform: translateX(0); }
-  .mobile-menu.open .mobile-links li:nth-child(1) .mobile-link { transition-delay: 0.07s; }
-  .mobile-menu.open .mobile-links li:nth-child(2) .mobile-link { transition-delay: 0.12s; }
-  .mobile-menu.open .mobile-links li:nth-child(3) .mobile-link { transition-delay: 0.17s; }
-  .mobile-menu.open .mobile-links li:nth-child(4) .mobile-link { transition-delay: 0.22s; }
+  .mobile-menu.open .mobile-links li:nth-child(1) .mobile-link { transition-delay: 0.1s; }
+  .mobile-menu.open .mobile-links li:nth-child(2) .mobile-link { transition-delay: 0.16s; }
+  .mobile-menu.open .mobile-links li:nth-child(3) .mobile-link { transition-delay: 0.22s; }
+  .mobile-menu.open .mobile-links li:nth-child(4) .mobile-link { transition-delay: 0.28s; }
   .mobile-link:hover { color: var(--lavender-mid); padding-left: 8px; }
 
   .mobile-overlay {
-    display: none;
     position: fixed;
     inset: 0;
-    background: rgba(42,40,53,0.35);
+    background: rgba(42,40,53,0.4);
     z-index: 140;
     opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     backdrop-filter: blur(2px);
-    transition: opacity 0.35s;
+    -webkit-backdrop-filter: blur(2px);
+    transition: opacity 0.35s ease, visibility 0s linear 0.35s;
   }
-  .mobile-overlay.open { opacity: 1; }
+  .mobile-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.35s ease, visibility 0s linear 0s;
+  }
 
   /* ── 900px ── */
   @media (max-width: 900px) {
@@ -715,8 +731,6 @@
   @media (max-width: 768px) {
     .nav-links { display: none; }
     .hamburger { display: flex; }
-    .mobile-menu { display: block; }
-    .mobile-overlay { display: block; }
 
     .hero {
       grid-template-columns: 1fr;
@@ -937,35 +951,44 @@
     </div>
 
     <!-- Diabetes Tracking App Project -->
+<!-- Athnova Business Suite Project -->
     <div class="project-card fade-up">
       <div class="project-carousel">
         <div class="carousel-track" style="transform: translateX(0%)">
           <div class="carousel-slide">
-            <div class="thumb-mockup">
-              <div class="mockup-circle"></div>
-              <div class="mockup-bar wide"></div>
-              <div class="mockup-bar mid"></div>
-              <div class="mockup-row">
-                <div class="mockup-chip"></div>
-                <div class="mockup-chip" style="background:var(--pink-light)"></div>
-              </div>
-              <div class="mockup-bar pink-bar"></div>
-              <div class="mockup-bar" style="width:40%;background:var(--lavender-light)"></div>
-            </div>
+          <img src="img 1.jpeg">
           </div>
+          <div class="carousel-slide">
+            <img src="img 2.jpeg"></div>
+          <div class="carousel-slide">
+            <img src="img 3.jpeg"></div>
+          <div class="carousel-slide">
+            <img src="img 4.jpeg"></div>
+          <div class="carousel-slide">
+            <img src="img 5.jpeg">
+          </div>
+        </div>
+        <button class="carousel-nav prev" onclick="prevSlide(this, 5)">❮</button>
+        <button class="carousel-nav next" onclick="nextSlide(this, 5)">❯</button>
+        <div class="carousel-dots">
+          <button class="dot active" onclick="goToSlide(this, 0, 5)"></button>
+          <button class="dot" onclick="goToSlide(this, 1, 5)"></button>
+          <button class="dot" onclick="goToSlide(this, 2, 5)"></button>
+          <button class="dot" onclick="goToSlide(this, 3, 5)"></button>
+          <button class="dot" onclick="goToSlide(this, 4, 5)"></button>
         </div>
       </div>
       <div class="project-body">
         <div class="project-tag">Mobile App · Healthcare</div>
-        <div class="project-title">Diabetes Tracking App</div>
+        <div class="project-title">Athnova Diabetes Tracking App</div>
         <p class="project-desc">
-          A mobile healthcare application designed to help users monitor blood sugar levels, medication schedules, and health insights through intuitive dashboards and real-time tracking.
+          A mobile application for tracking diabetes management, featuring glucose monitoring, medication reminders, and health insights. Built with a focus on user experience and accessibility.
         </p>
         <div class="project-tags-row">
           <span class="tag">UI/UX Design</span>
-          <span class="tag">Mobile App</span>
+          <span class="tag">Healthcare</span>
           <span class="tag pink">Figma</span>
-          <span class="tag pink">Dashboard</span>
+          <span class="tag">Mobile App</span>
         </div>
       </div>
     </div>
@@ -1053,55 +1076,79 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  // Carousel functions
-  function getCarousel(button) {
-    return button.closest('.project-carousel');
+  // ── CAROUSEL ──
+  function getCarousel(el) { return el.closest('.project-carousel'); }
+
+  function getCurrentIndex(carousel) {
+    const dots = carousel.querySelectorAll('.dot');
+    const activeDot = carousel.querySelector('.dot.active');
+    return Array.from(dots).indexOf(activeDot);
+  }
+
+  function goToIndex(carousel, index) {
+    const dots = carousel.querySelectorAll('.dot');
+    const total = dots.length;
+    const safeIndex = ((index % total) + total) % total;
+    carousel.querySelector('.dot.active').classList.remove('active');
+    dots[safeIndex].classList.add('active');
+    carousel.querySelector('.carousel-track').style.transform = `translateX(-${safeIndex * 100}%)`;
   }
 
   function updateCarousel(carousel) {
-    const dots = carousel.querySelectorAll('.dot');
-    const track = carousel.querySelector('.carousel-track');
-    const currentDot = carousel.querySelector('.dot.active');
-    const currentIndex = Array.from(dots).indexOf(currentDot);
-    
-    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    goToIndex(carousel, getCurrentIndex(carousel));
   }
 
   function nextSlide(button, totalSlides) {
     const carousel = getCarousel(button);
-    const dots = carousel.querySelectorAll('.dot');
-    const currentDot = carousel.querySelector('.dot.active');
-    const currentIndex = Array.from(dots).indexOf(currentDot);
-    const nextIndex = (currentIndex + 1) % totalSlides;
-    
-    currentDot.classList.remove('active');
-    dots[nextIndex].classList.add('active');
-    updateCarousel(carousel);
+    goToIndex(carousel, getCurrentIndex(carousel) + 1);
   }
 
   function prevSlide(button, totalSlides) {
     const carousel = getCarousel(button);
-    const dots = carousel.querySelectorAll('.dot');
-    const currentDot = carousel.querySelector('.dot.active');
-    const currentIndex = Array.from(dots).indexOf(currentDot);
-    const prevIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-    
-    currentDot.classList.remove('active');
-    dots[prevIndex].classList.add('active');
-    updateCarousel(carousel);
+    goToIndex(carousel, getCurrentIndex(carousel) - 1);
   }
 
   function goToSlide(dot, index, totalSlides) {
     const carousel = getCarousel(dot);
-    const dots = carousel.querySelectorAll('.dot');
-    const currentDot = carousel.querySelector('.dot.active');
-    
-    currentDot.classList.remove('active');
-    dot.classList.add('active');
-    updateCarousel(carousel);
+    goToIndex(carousel, index);
   }
+
+  // Touch swipe for carousels
+  document.querySelectorAll('.project-carousel').forEach(carousel => {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+
+    carousel.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isDragging = true;
+    }, { passive: true });
+
+    carousel.addEventListener('touchmove', e => {
+      if (!isDragging) return;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
+      // Only prevent scroll if horizontal swipe is dominant
+      if (Math.abs(dx) > Math.abs(dy)) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    carousel.addEventListener('touchend', e => {
+      if (!isDragging) return;
+      isDragging = false;
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+        dx < 0 ? goToIndex(carousel, getCurrentIndex(carousel) + 1)
+                : goToIndex(carousel, getCurrentIndex(carousel) - 1);
+      }
+    }, { passive: true });
+  });
 </script>
 
 </body>
 </html>
+
 
