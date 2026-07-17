@@ -1,931 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nasreen S — Web Developer</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --primary: #2563EB;
-    --primary-light: #DBEAFE;
-    --primary-mid: #3B82F6;
-    --accent: #10B981;
-    --accent-light: #ECFDF5;
-    --accent-mid: #34D399;
-    --white: #FDFCFF;
-    --gray-light: #F4F3F8;
-    --gray-mid: #9896A4;
-    --gray-dark: #3E3C4A;
-    --text-main: #1F2937;
-    --text-muted: #6B7280;
-    --card-bg: #FFFFFF;
-    --border: rgba(59,130,246,0.15);
-    --success: #10B981;
-    --warning: #F59E0B;
-    --code-bg: #1F2937;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--white);
-    color: var(--text-main);
-    overflow-x: hidden;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; width: 100%; z-index: 100;
-    background: rgba(253,252,255,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 5%;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 64px;
-  }
-  .nav-logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    color: var(--text-main);
-    letter-spacing: -0.02em;
-  }
-  .nav-logo span { color: var(--primary-mid); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {
-    text-decoration: none;
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--primary-mid); }
-
-  /* Mobile Menu */
-  #hamburger { display: none; }
-  #mobileMenu { display: none; }
-
-  @media (max-width: 768px) {
-    #hamburger {
-      display: flex;
-      flex-direction: column;
-      background: none;
-      border: none;
-      cursor: pointer;
-      gap: 5px;
-    }
-    #hamburger span {
-      width: 24px;
-      height: 2px;
-      background: var(--text-main);
-      transition: 0.3s;
-    }
-    #hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(8px, 8px); }
-    #hamburger.open span:nth-child(2) { opacity: 0; }
-    #hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
-
-    .nav-links { display: none; }
-    #mobileMenu {
-      position: fixed;
-      top: 64px;
-      left: 0;
-      width: 100%;
-      background: var(--white);
-      flex-direction: column;
-      gap: 0;
-      padding: 0;
-      z-index: 99;
-      display: none;
-    }
-    #mobileMenu.open { display: flex; }
-    .mobile-link {
-      padding: 16px 5%;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      color: var(--text-muted);
-    }
-    #mobileOverlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 98;
-    }
-    #mobileOverlay.open { display: block; }
-  }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 80px 8% 0;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -120px; right: -120px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, #DBEAFE 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; left: 10%;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, #ECFDF5 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .hero-text { position: relative; z-index: 2; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--primary-light);
-    color: #1E40AF;
-    font-size: 0.75rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 6px 16px; border-radius: 100px;
-    margin-bottom: 1.5rem;
-  }
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #3B82F6;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%,100%{opacity:1;transform:scale(1)}
-    50%{opacity:0.5;transform:scale(1.3)}
-  }
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.8rem, 5vw, 4.2rem);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    color: var(--text-main);
-    margin-bottom: 1.2rem;
-  }
-  h1 em {
-    font-style: italic;
-    color: var(--primary-mid);
-  }
-  .hero-sub {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-    max-width: 440px;
-    margin-bottom: 2.5rem;
-  }
-  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--primary-mid);
-    color: #fff;
-    text-decoration: none;
-    padding: 13px 28px;
-    border-radius: 100px;
-    font-weight: 600; font-size: 0.9rem;
-    transition: all 0.25s;
-    box-shadow: 0 4px 20px rgba(59,130,246,0.4);
-    border: none;
-    cursor: pointer;
-  }
-  .btn-primary:hover { background: #1D4ED8; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,246,0.45); }
-  .btn-outline {
-    background: transparent;
-    color: var(--primary-mid);
-    text-decoration: none;
-    padding: 13px 28px;
-    border-radius: 100px;
-    border: 1.5px solid var(--primary-mid);
-    font-weight: 600; font-size: 0.9rem;
-    transition: all 0.25s;
-    cursor: pointer;
-  }
-  .btn-outline:hover { background: var(--primary-light); transform: translateY(-2px); }
-
-  /* ── HERO VISUAL ── */
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-  }
-  .avatar-wrap {
-    position: relative;
-    width: 340px; height: 380px;
-  }
-  .avatar-ring {
-    position: absolute;
-    top: -20px; left: -20px;
-    width: 380px; height: 420px;
-    border: 1.5px dashed var(--primary);
-    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
-    animation: rotate 18s linear infinite;
-  }
-  @keyframes rotate { to { transform: rotate(360deg); } }
-  .avatar-circle {
-    width: 300px; height: 300px;
-    border-radius: 50% 45% 55% 42%;
-    background: linear-gradient(145deg, var(--primary-light), var(--accent-light));
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'DM Serif Display', serif;
-    font-size: 5rem;
-    color: var(--primary-mid);
-    margin: 20px auto 0;
-    border: 2px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-circle::after {
-    content: 'N';
-    font-size: 9rem;
-    opacity: 0.12;
-    position: absolute;
-    bottom: -1rem;
-    right: -0.5rem;
-    line-height: 1;
-  }
-  .float-chip {
-    position: absolute;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 10px 16px;
-    font-size: 0.75rem; font-weight: 600;
-    color: var(--text-main);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    white-space: nowrap;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .chip1 { bottom: 80px; left: -30px; animation: float 3s ease-in-out infinite; }
-  .chip2 { top: 60px; right: -20px; animation: float 3s ease-in-out infinite 0.5s; }
-  .chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary-mid); }
-  .chip-dot.accent { background: var(--accent-mid); }
-
-  @keyframes float { 
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  /* ── SECTIONS ── */
-  section { padding: 100px 8%; }
-  .section-label {
-    font-size: 0.75rem; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--primary-mid);
-    margin-bottom: 0.75rem;
-  }
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    line-height: 1.15;
-    color: var(--text-main);
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-  .divider {
-    width: 48px;
-    height: 2px;
-    background: var(--primary-mid);
-    margin-bottom: 2rem;
-  }
-
-  /* ── SKILLS SECTION ── */
-  .skills-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-  .skill-group {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2rem;
-    transition: all 0.3s;
-  }
-  .skill-group:hover {
-    box-shadow: 0 12px 40px rgba(37,99,235,0.1);
-    transform: translateY(-4px);
-    border-color: var(--primary-mid);
-  }
-  .skill-group-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    color: var(--primary-mid);
-    margin-bottom: 1rem;
-  }
-  .skill-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  .skill-tag {
-    background: var(--primary-light);
-    color: #1E40AF;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    display: inline-block;
-  }
-  .skill-tag.accent {
-    background: var(--accent-light);
-    color: #065F46;
-  }
-  .skill-tag.code {
-    background: #F3F4F6;
-    color: #111827;
-  }
-
-  /* ── PROJECTS SECTION ── */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    margin-top: 3rem;
-  }
-  .project-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-    transition: all 0.3s;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .project-card:hover {
-    box-shadow: 0 20px 50px rgba(37,99,235,0.1);
-    border-color: var(--primary-mid);
-  }
-  .project-card:nth-child(even) {
-    grid-template-columns: 1fr 1fr;
-  }
-  .project-card:nth-child(even) .project-body {
-    order: -1;
-  }
-  .project-carousel {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    background: linear-gradient(135deg, var(--primary-light), var(--accent-light));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .carousel-track {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.4s ease;
-  }
-  .carousel-slide {
-    min-width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #2563EB, #10B981);
-    color: white;
-    font-family: 'DM Serif Display', serif;
-    font-size: 3rem;
-    font-weight: bold;
-  }
-  .carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.9);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.3s;
-    z-index: 5;
-  }
-  .carousel-nav:hover { background: white; transform: translateY(-50%) scale(1.1); }
-  .carousel-nav.prev { left: 12px; }
-  .carousel-nav.next { right: 12px; }
-  .carousel-dots {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 5;
-  }
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .dot.active { background: white; width: 24px; border-radius: 4px; }
-
-  .project-body {
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .project-tag {
-    display: inline-block;
-    background: var(--primary-light);
-    color: #1E40AF;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 100px;
-    margin-bottom: 1rem;
-    width: fit-content;
-  }
-  .project-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.8rem;
-    color: var(--text-main);
-    margin-bottom: 0.75rem;
-  }
-  .project-desc {
-    color: var(--text-muted);
-    line-height: 1.8;
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-  }
-  .project-tags-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  .tag {
-    background: var(--primary-light);
-    color: #1E40AF;
-    padding: 6px 12px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-  .tag.accent {
-    background: var(--accent-light);
-    color: #065F46;
-  }
-
-  /* ── EXPERIENCE SECTION ── */
-  .experience-list {
-    margin-top: 2rem;
-  }
-  .experience-item {
-    padding: 2rem;
-    border-left: 3px solid var(--primary-mid);
-    background: var(--gray-light);
-    border-radius: 8px;
-    margin-bottom: 2rem;
-  }
-  .exp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 0.5rem;
-  }
-  .exp-role {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    color: var(--text-main);
-  }
-  .exp-date {
-    color: var(--primary-mid);
-    font-weight: 600;
-    font-size: 0.85rem;
-  }
-  .exp-company {
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-  .exp-desc {
-    color: var(--text-muted);
-    line-height: 1.8;
-    font-size: 0.95rem;
-  }
-
-  /* ── CONTACT SECTION ── */
-  .contact-wrap {
-    text-align: center;
-  }
-  .contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-  .contact-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .contact-card:hover {
-    box-shadow: 0 12px 40px rgba(37,99,235,0.1);
-    border-color: var(--primary-mid);
-    transform: translateY(-4px);
-  }
-  .contact-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-  .contact-label {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
-  }
-  .contact-value {
-    color: var(--text-main);
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--text-main);
-    color: white;
-    text-align: center;
-    padding: 2rem 8%;
-    font-size: 0.9rem;
-  }
-  footer span {
-    color: var(--primary-mid);
-  }
-
-  /* ── ANIMATIONS ── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    .hero {
-      grid-template-columns: 1fr;
-      padding-top: 100px;
-    }
-    .hero-visual {
-      margin-top: 2rem;
-    }
-    .avatar-wrap {
-      width: 240px;
-      height: 280px;
-    }
-    .avatar-circle {
-      width: 200px;
-      height: 200px;
-      font-size: 3rem;
-    }
-    .avatar-ring {
-      width: 280px;
-      height: 320px;
-    }
-    section { padding: 60px 5%; }
-    .project-card {
-      grid-template-columns: 1fr;
-    }
-    .project-card:nth-child(even) .project-body {
-      order: 0;
-    }
-    .skills-container {
-      grid-template-columns: 1fr;
-    }
-    .project-carousel {
-      height: 200px;
-    }
-  }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- glow backdrop -->
+<div class="glow glow-top"></div>
+<div class="glow glow-bottom"></div>
+
 <!-- NAV -->
-<nav>
-  <div class="nav-logo">Nasreen<span>.</span>dev</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Work</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <button id="hamburger" aria-label="Menu" aria-expanded="false">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="brand-mark">NS</span> Nasreen S</div>
+    <nav class="nav-links">
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary nav-cta">Let's Talk</a>
+    <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div id="mobileOverlay" class="mobile-overlay"></div>
+<nav id="mobileMenu" class="mobile-menu">
+  <a class="mobile-link" href="#skills">Skills</a>
+  <a class="mobile-link" href="#projects">Projects</a>
+  <a class="mobile-link" href="#experience">Experience</a>
+  <a class="mobile-link" href="#contact">Contact</a>
+  <a class="mobile-link mobile-cta btn btn-primary" href="#contact">Let's Talk</a>
 </nav>
 
-<div id="mobileOverlay"></div>
-<div id="mobileMenu">
-  <a href="#about" class="mobile-link">About</a>
-  <a href="#skills" class="mobile-link">Skills</a>
-  <a href="#projects" class="mobile-link">Work</a>
-  <a href="#experience" class="mobile-link">Experience</a>
-  <a href="#contact" class="mobile-link">Contact</a>
-</div>
-
-<!-- HERO -->
-<section class="hero" id="about">
-  <div class="hero-text">
-    <div class="hero-badge fade-up">
-      💻 Web Developer
-    </div>
-    <h1 class="fade-up">Building <em>responsive</em> web experiences</h1>
-    <p class="hero-sub fade-up">
-      Computer Science student with 6 months of hands-on web development experience. Specialized in building production-ready interfaces using HTML5, CSS3, JavaScript, and modern frameworks. Let's create something amazing together.
-    </p>
-    <div class="hero-ctas fade-up">
-      <a href="#projects" class="btn-primary">View My Work</a>
-      <a href="#contact" class="btn-outline">Get In Touch</a>
-    </div>
-  </div>
-  <div class="hero-visual fade-up">
-    <div class="avatar-wrap">
-      <div class="avatar-ring"></div>
-      <div class="avatar-circle">💻</div>
-      <div class="float-chip chip1">
-        <span class="chip-dot"></span>
-        Frontend Dev
-      </div>
-      <div class="float-chip chip2">
-        <span class="chip-dot accent"></span>
-        Full Stack
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-label fade-up">My Toolkit</div>
-  <h2 class="section-title fade-up">Technical <em>Skills</em></h2>
-  <div class="divider fade-up"></div>
-
-  <div class="skills-container">
-    <!-- Frontend Skills -->
-    <div class="skill-group fade-up">
-      <div class="skill-group-title">Frontend</div>
-      <div class="skill-list">
-        <span class="skill-tag">HTML5</span>
-        <span class="skill-tag">CSS3</span>
-        <span class="skill-tag">JavaScript (ES6)</span>
-        <span class="skill-tag">Bootstrap 5</span>
-        <span class="skill-tag">Responsive Design</span>
-        <span class="skill-tag">WordPress</span>
-      </div>
-    </div>
-
-    <!-- Backend Skills -->
-    <div class="skill-group fade-up">
-      <div class="skill-group-title">Backend</div>
-      <div class="skill-list">
-        <span class="skill-tag accent">Python</span>
-        <span class="skill-tag accent">SQL</span>
-        <span class="skill-tag accent">MongoDB</span>
-        <span class="skill-tag accent">REST APIs</span>
-        <span class="skill-tag accent">Data Automation</span>
-      </div>
-    </div>
-
-    <!-- Tools & Concepts -->
-    <div class="skill-group fade-up">
-      <div class="skill-group-title">Tools & Concepts</div>
-      <div class="skill-list">
-        <span class="skill-tag code">Git</span>
-        <span class="skill-tag code">VS Code</span>
-        <span class="skill-tag code">UI Debugging</span>
-        <span class="skill-tag code">Cross-Browser Compatibility</span>
-        <span class="skill-tag code">Agile/Scrum</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="section-label fade-up">Portfolio</div>
-  <h2 class="section-title fade-up">Featured <em>Projects</em></h2>
-  <div class="divider fade-up"></div>
-
-  <div class="projects-grid">
-    <!-- Project 1: Website Duplication -->
-    <div class="project-card fade-up">
-      <div class="project-carousel">
-        <div class="carousel-track" style="transform: translateX(0%)">
-          <div class="carousel-slide">📱 WordPress</div>
-          <div class="carousel-slide">🎨 HTML/CSS</div>
-          <div class="carousel-slide">✨ Responsive</div>
-          <div class="carousel-slide">🚀 Live</div>
-          <div class="carousel-slide">⚡ Optimized</div>
-        </div>
-        <button class="carousel-nav prev" onclick="prevSlide(this, 5)">❮</button>
-        <button class="carousel-nav next" onclick="nextSlide(this, 5)">❯</button>
-        <div class="carousel-dots">
-          <button class="dot active" onclick="goToSlide(this, 0, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 1, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 2, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 3, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 4, 5)"></button>
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow fade-up">WEB DEVELOPER · UI/UX DESIGNER</p>
+        <h1>Engineering <span class="accent">pixel-perfect</span> interfaces, powered by <span class="accent">automation</span> that saves real hours.</h1>
+        <p class="hero-sub">Computer Science undergraduate (CGPA 8.1) turning WordPress precision and vanilla-JS craftsmanship into measurable efficiency — 40% faster reporting, 30% faster QA.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Let's Talk</a>
+          <a href="#" class="btn btn-ghost">Download Resume ↓</a>
         </div>
       </div>
-      <div class="project-body">
-        <div class="project-tag">Web Development · WordPress</div>
-        <div class="project-title">Website Duplication</div>
-        <p class="project-desc">
-          Successfully replicated 5 production websites with pixel-accurate fidelity using WordPress and custom HTML/CSS. Customized themes and plugins to match original designs while reducing build time by 35%, significantly improving development efficiency.
-        </p>
+
+      <div class="hero-visual">
+        <div class="tile-field">
+          <svg viewBox="0 0 400 480" class="signature-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="gline" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#38bdf8"/>
+                <stop offset="100%" stop-color="#1e3a8a"/>
+              </linearGradient>
+            </defs>
+            <!-- abstract "before/after" fidelity motif -->
+            <rect x="30" y="60" width="150" height="200" rx="10" fill="none" stroke="url(#gline)" stroke-width="1.5" opacity="0.5"/>
+            <rect x="220" y="60" width="150" height="200" rx="10" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+            <line x1="200" y1="40" x2="200" y2="280" stroke="#38bdf8" stroke-width="1" stroke-dasharray="4 6" opacity="0.6"/>
+            <circle cx="200" cy="160" r="14" fill="#0b1220" stroke="#38bdf8" stroke-width="1.5"/>
+            <path d="M193 160 L198 166 L208 154" stroke="#38bdf8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <g opacity="0.85">
+              <rect x="50" y="90" width="110" height="10" rx="3" fill="#1e3a8a"/>
+              <rect x="50" y="112" width="80" height="8" rx="3" fill="#1e3a8a" opacity="0.6"/>
+              <rect x="50" y="140" width="110" height="60" rx="6" fill="#0f1b33"/>
+            </g>
+            <g>
+              <rect x="240" y="90" width="110" height="10" rx="3" fill="#38bdf8"/>
+              <rect x="240" y="112" width="80" height="8" rx="3" fill="#38bdf8" opacity="0.7"/>
+              <rect x="240" y="140" width="110" height="60" rx="6" fill="#132445"/>
+            </g>
+            <text x="200" y="330" text-anchor="middle" fill="#7fb3f0" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="1">ORIGINAL — REBUILD</text>
+            <text x="200" y="352" text-anchor="middle" fill="#4b6a99" font-family="JetBrains Mono, monospace" font-size="10">pixel-accurate fidelity, verified</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK MARQUEE -->
+  <section class="stack" id="stack">
+    <div class="stack-track">
+      <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Bootstrap 5</span>
+      <span>WordPress</span><span>Python</span><span>SQL</span><span>MongoDB</span><span>Git</span>
+      <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Bootstrap 5</span>
+      <span>WordPress</span><span>Python</span><span>SQL</span><span>MongoDB</span><span>Git</span>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <p class="eyebrow center fade-up">MY TOOLKIT</p>
+    <h2 class="section-title center fade-up">Technical Skills</h2>
+
+    <div class="skills-container">
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-list">
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span>
+          <span class="skill-tag">JavaScript (ES6)</span>
+          <span class="skill-tag">Bootstrap 5</span>
+          <span class="skill-tag">Responsive Design</span>
+          <span class="skill-tag">WordPress</span>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">Backend</div>
+        <div class="skill-list">
+          <span class="skill-tag accent">Python</span>
+          <span class="skill-tag accent">SQL</span>
+          <span class="skill-tag accent">MongoDB</span>
+          <span class="skill-tag accent">REST APIs</span>
+          <span class="skill-tag accent">Data Automation</span>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">Tools &amp; Concepts</div>
+        <div class="skill-list">
+          <span class="skill-tag code">Git</span>
+          <span class="skill-tag code">VS Code</span>
+          <span class="skill-tag code">UI Debugging</span>
+          <span class="skill-tag code">Cross-Browser Compatibility</span>
+          <span class="skill-tag code">MS Excel</span>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">Product Design</div>
+        <div class="skill-list">
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">UI/UX Design</span>
+          <span class="skill-tag">Wireframing</span>
+          <span class="skill-tag">Prototyping</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY PARTNER -->
+  <section class="why">
+    <p class="eyebrow center fade-up">WHY PARTNER WITH ME</p>
+    <h2 class="section-title center fade-up">Why partner with me<br>today and always?</h2>
+
+    <div class="why-grid">
+      <div class="why-card why-card-wide fade-up">
+        <div class="metric-panel">
+          <span class="metric-value" data-target="40">0</span><span class="metric-unit">%</span>
+          <p class="metric-label">reduction in manual reporting time via Python + Excel automation</p>
+        </div>
+      </div>
+      <div class="why-card fade-up">
+        <div class="mini-graphic"></div>
+        <h3>Fidelity First Mindset</h3>
+        <p>Pixel-accurate WordPress rebuilds across 5 production sites, matched layout-for-layout, typography-for-typography.</p>
+      </div>
+      <div class="why-card fade-up">
+        <h3>Productivity Engineering</h3>
+        <p>I don't just complete tasks — I look for the automation underneath them. Cut manual processing by ~40% with a Python + Excel pipeline.</p>
+      </div>
+      <div class="why-card why-card-wide fade-up">
+        <h3>Collaborative QA Discipline</h3>
+        <p>Resolved 20+ UI bugs working directly with senior developers, cutting the QA review cycle by ~30% through weekly code reviews and shared standards.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects" id="projects">
+    <div class="projects-head">
+      <div>
+        <p class="eyebrow fade-up">WORK</p>
+        <h2 class="section-title fade-up">Featured Projects</h2>
+        <p class="projects-sub fade-up">Front-end engineering, backend automation, and product design — the same care for fidelity and usability across every discipline.</p>
+      </div>
+    </div>
+
+    <div class="case-list case-list--text">
+
+      <article class="case-card--text fade-up">
+        <div class="project-top">
+          <span class="tag">💻 Frontend Development · JavaScript</span>
+          <span class="impact-badge">−30% QA cycle</span>
+        </div>
+        <h3>Responsive E-Commerce Front-End</h3>
+        <p><strong>Problem —</strong> the team needed a customer-facing storefront that stayed stable across a 20+ item bug backlog and behaved identically on mobile and desktop.</p>
+        <p><strong>Solution —</strong> built a multi-page UI — product listing, cart, checkout — in vanilla JavaScript, chosen deliberately over a framework to keep the bundle light and prove real command of DOM, events, and state for modals, carousels, and dropdowns.</p>
+        <p><strong>Result —</strong> resolved 20+ UI bugs alongside senior developers, cutting the QA review cycle by <strong>~30%</strong>.</p>
+        <div class="why-tool">
+          <span class="why-tool-label">Why this tool</span>
+          <p>Vanilla JS over a framework — smaller bundle, and it forces real fluency in the fundamentals a framework usually hides.</p>
+        </div>
         <div class="project-tags-row">
-          <span class="tag">WordPress</span>
-          <span class="tag">HTML5</span>
-          <span class="tag accent">CSS3</span>
-          <span class="tag">Responsive</span>
-          <span class="tag accent">Cross-Browser</span>
+          <span class="tag-pill">Vanilla JS</span>
+          <span class="tag-pill accent">Bootstrap 5</span>
+          <span class="tag-pill">HTML5</span>
+          <span class="tag-pill accent">CSS3</span>
         </div>
-      </div>
-    </div>
+      </article>
 
-    <!-- Project 2: E-Commerce Frontend -->
-    <div class="project-card fade-up">
-      <div class="project-carousel">
-        <div class="carousel-track" style="transform: translateX(0%)">
-          <div class="carousel-slide">🛒 E-Commerce</div>
-          <div class="carousel-slide">📱 Responsive</div>
-          <div class="carousel-slide">🎯 Interactive</div>
-          <div class="carousel-slide">💳 Cart & Checkout</div>
-          <div class="carousel-slide">✅ Production Ready</div>
+      <article class="case-card--text fade-up">
+        <div class="project-top">
+          <span class="tag">💻 Web Development · WordPress</span>
+          <span class="impact-badge">−35% build time</span>
         </div>
-        <button class="carousel-nav prev" onclick="prevSlide(this, 5)">❮</button>
-        <button class="carousel-nav next" onclick="nextSlide(this, 5)">❯</button>
-        <div class="carousel-dots">
-          <button class="dot active" onclick="goToSlide(this, 0, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 1, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 2, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 3, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 4, 5)"></button>
+        <h3>Website Duplication — Pixel-Accurate Rebuilds</h3>
+        <p><strong>Problem —</strong> reproduce 5 live production websites with pixel-accurate fidelity, without manual-build timelines.</p>
+        <p><strong>Solution —</strong> rebuilt each site in WordPress, customizing themes and plugins to match the original layout, typography, and structure exactly.</p>
+        <p><strong>Result —</strong> pixel-perfect parity across all 5 sites, cutting build time by <strong>~35%</strong> versus manual HTML/CSS.</p>
+        <div class="why-tool">
+          <span class="why-tool-label">Why this tool</span>
+          <p>WordPress's theme system let me match structure fast without sacrificing precision — speed and fidelity together.</p>
         </div>
-      </div>
-      <div class="project-body">
-        <div class="project-tag">Frontend Development · JavaScript</div>
-        <div class="project-title">Responsive E-Commerce Frontend</div>
-        <p class="project-desc">
-          Designed and built a fully responsive e-commerce UI with multi-page layouts including product listings, shopping cart, and checkout. Implemented vanilla JavaScript for interactive features (modals, carousels, dropdowns) optimized for all screen sizes while improving QA review efficiency by 30%.
-        </p>
         <div class="project-tags-row">
-          <span class="tag">HTML5</span>
-          <span class="tag">CSS3</span>
-          <span class="tag accent">JavaScript</span>
-          <span class="tag">Bootstrap 5</span>
-          <span class="tag accent">UI Components</span>
+          <span class="tag-pill">WordPress</span>
+          <span class="tag-pill accent">HTML5</span>
+          <span class="tag-pill">CSS3</span>
+          <span class="tag-pill accent">Cross-Browser</span>
         </div>
-      </div>
-    </div>
+      </article>
 
-    <!-- Project 3: Bug Resolution & Optimization -->
-    <div class="project-card fade-up">
-      <div class="project-carousel">
-        <div class="carousel-track" style="transform: translateX(0%)">
-          <div class="carousel-slide">🐛 Debugging</div>
-          <div class="carousel-slide">⚙️ Optimization</div>
-          <div class="carousel-slide">👥 Team Collaboration</div>
-          <div class="carousel-slide">📊 Reporting</div>
-          <div class="carousel-slide">📈 30% Improvement</div>
+      <article class="case-card--text fade-up">
+        <div class="project-top">
+          <span class="tag">⚙️ QA &amp; Automation · Python</span>
+          <span class="impact-badge">−40% manual effort</span>
         </div>
-        <button class="carousel-nav prev" onclick="prevSlide(this, 5)">❮</button>
-        <button class="carousel-nav next" onclick="nextSlide(this, 5)">❯</button>
-        <div class="carousel-dots">
-          <button class="dot active" onclick="goToSlide(this, 0, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 1, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 2, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 3, 5)"></button>
-          <button class="dot" onclick="goToSlide(this, 4, 5)"></button>
+        <h3>Reporting Automation Pipeline</h3>
+        <p><strong>Problem —</strong> manual data collection and reporting was consuming significant team hours and risking accuracy.</p>
+        <p><strong>Solution —</strong> built a Python + Excel pipeline to automate data collection and report generation.</p>
+        <p><strong>Result —</strong> cut manual processing time by <strong>~40%</strong> and improved metrics accuracy.</p>
+        <div class="why-tool">
+          <span class="why-tool-label">Why this tool</span>
+          <p>Python for repeatable, scriptable logic; Excel because that's where the team already lived — automation that fit the workflow, not the other way around.</p>
         </div>
-      </div>
-      <div class="project-body">
-        <div class="project-tag">QA & Optimization · Team Project</div>
-        <div class="project-title">UI Debugging & Optimization</div>
-        <p class="project-desc">
-          Identified and resolved 20+ UI bugs through collaborative code reviews with senior developers, significantly accelerating the QA cycle by 30%. Automated data-collection and reporting workflows using Python and Excel, reducing manual effort by 40% and improving reporting accuracy across the organization.
-        </p>
         <div class="project-tags-row">
-          <span class="tag">UI Debugging</span>
-          <span class="tag accent">Python</span>
-          <span class="tag">Problem Solving</span>
-          <span class="tag accent">Automation</span>
-          <span class="tag">Code Review</span>
+          <span class="tag-pill">Python</span>
+          <span class="tag-pill accent">MS Excel</span>
+          <span class="tag-pill">Automation</span>
+        </div>
+      </article>
+
+      <article class="case-card--text fade-up">
+        <div class="project-top">
+          <span class="tag">🎨 Dashboard · Business Suite</span>
+          <span class="impact-badge impact-badge--design">Figma Prototype</span>
+        </div>
+        <h3>Athnova Business Suite</h3>
+        <p>A comprehensive business management platform featuring invoices, product inventory, customer management, and subscription tracking. Built with modern design principles for optimal usability and clean interfaces across every screen.</p>
+        <div class="project-tags-row">
+          <span class="tag-pill">Dashboard Design</span>
+          <span class="tag-pill accent">Business Suite</span>
+          <span class="tag-pill">Figma</span>
+          <span class="tag-pill accent">Multiple Screens</span>
+        </div>
+      </article>
+
+      <article class="case-card--text fade-up">
+        <div class="project-top">
+          <span class="tag">🎨 Mobile App · Healthcare</span>
+          <span class="impact-badge impact-badge--design">Figma Prototype</span>
+        </div>
+        <h3>Diabetes Tracking App</h3>
+        <p>A mobile healthcare application designed to help users monitor blood sugar levels, medication schedules, and health insights through intuitive dashboards and real-time tracking.</p>
+        <div class="project-tags-row">
+          <span class="tag-pill">UI/UX Design</span>
+          <span class="tag-pill accent">Mobile App</span>
+          <span class="tag-pill">Figma</span>
+          <span class="tag-pill accent">Dashboard</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="experience" id="experience">
+    <p class="eyebrow fade-up">EXPERIENCE</p>
+    <h2 class="section-title fade-up">Professional milestones &amp; impact</h2>
+
+    <div class="timeline">
+      <div class="timeline-item fade-up">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <span class="timeline-date">Aug 2025 — Jan 2026</span>
+          <h3>Web Developer Intern — Agile Tribers Tech Solutions, Nagercoil</h3>
+          <ul>
+            <li>Built and deployed a responsive internal e-commerce platform with HTML5, CSS3 and Bootstrap 5, ensuring consistent layouts across mobile, tablet, and desktop.</li>
+            <li>Identified and resolved 20+ UI bugs with 3 senior developers, improving interface stability and accelerating the QA cycle by ~30%.</li>
+            <li>Replicated 5 production websites with pixel-accurate fidelity using WordPress, strengthening cross-browser compatibility skills.</li>
+            <li>Automated data-collection and reporting workflows using Python and Excel, reducing manual effort by ~40% and improving metrics accuracy.</li>
+            <li>Participated in weekly code reviews, adopting team best practices in code structure, naming conventions, and documentation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-up">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <span class="timeline-date">2022 — 2026</span>
+          <h3>B.E. Computer Science Engineering — PSN College of Engineering &amp; Technology, Tirunelveli</h3>
+          <p class="timeline-note">CGPA: 8.1 / 10</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="section-label fade-up">Journey</div>
-  <h2 class="section-title fade-up">Work <em>Experience</em></h2>
-  <div class="divider fade-up"></div>
+  <!-- PHILOSOPHY -->
+  <section class="philosophy">
+    <p class="eyebrow center fade-up">THE DEVELOPER BEHIND THE CODE</p>
+    <h2 class="section-title center fade-up">An engineering philosophy built on fidelity and efficiency</h2>
+    <p class="philosophy-text fade-up">I care about two things equally: whether the pixel matches the design, and whether the process behind it respects people's time. A rebuild isn't done until it's indistinguishable from the original — and a workflow isn't finished until the manual, repetitive part of it has been automated away.</p>
+  </section>
 
-  <div class="experience-list">
-    <div class="experience-item fade-up">
-      <div class="exp-header">
-        <div>
-          <div class="exp-role">Web Developer Intern</div>
-          <div class="exp-company">Agile Tribers Tech Solutions, Nagercoil</div>
-        </div>
-        <div class="exp-date">Aug 2025 – Jan 2026</div>
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-card fade-up">
+      <h2>Let's build something reliable.</h2>
+      <p>Open to Web Developer, Full-Stack, and UI/UX Design roles — and internship-to-full-time opportunities.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:nazrinznn@gmail.com">nazrinznn@gmail.com</a>
+        <a class="btn btn-ghost" href="tel:+919080047818">+91 90800 47818</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/nasreen-s-b79a0b393" target="_blank" rel="noopener">LinkedIn ↗</a>
       </div>
-      <p class="exp-desc">
-        • Built and deployed a responsive internal e-commerce platform using HTML5, CSS3, and Bootstrap 5<br>
-        • Identified and resolved 20+ UI bugs with 3 senior developers, improving QA cycle by ~30%<br>
-        • Replicated 5 production websites with pixel-accurate fidelity using WordPress<br>
-        • Automated data-collection workflows with Python, reducing manual processing by ~40%<br>
-        • Participated in weekly code reviews, adopting team best practices and conventions
-      </p>
+      <p class="contact-location">Rajapalayam, Tamil Nadu — 626117</p>
     </div>
+  </section>
+</main>
 
-    <div class="experience-item fade-up">
-      <div class="exp-header">
-        <div>
-          <div class="exp-role">B.E. Computer Science Engineering</div>
-          <div class="exp-company">PSN College of Engineering & Technology, Tirunelveli</div>
-        </div>
-        <div class="exp-date">2022 – 2026</div>
-      </div>
-      <p class="exp-desc">
-        CGPA: 8.1/10 — Focused on web development, software engineering, and full-stack technologies
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="contact-wrap">
-    <div class="section-label fade-up">Get In Touch</div>
-    <h2 class="section-title fade-up">Let's <em>Connect</em></h2>
-    <div class="divider fade-up" style="margin-left:auto;margin-right:auto;"></div>
-    <p class="fade-up" style="color:var(--text-muted);font-size:1rem;line-height:1.8;max-width:520px;margin:0 auto 2rem;">
-      I'm actively looking for opportunities as a Web Developer. Whether you have a project in mind or just want to discuss web development — I'd love to hear from you!
-    </p>
-    <div class="contact-grid">
-      <a href="mailto:nazrinznn@gmail.com" class="contact-card fade-up">
-        <span class="contact-icon">✉️</span>
-        <div class="contact-label">Email</div>
-        <div class="contact-value">nazrinznn@gmail.com</div>
-      </a>
-      <a href="tel:+919080047818" class="contact-card fade-up">
-        <span class="contact-icon">📱</span>
-        <div class="contact-label">Phone</div>
-        <div class="contact-value">+91 90800 47818</div>
-      </a>
-      <a href="https://www.linkedin.com/in/nasreen-s-b79a0b393" target="_blank" class="contact-card fade-up">
-        <span class="contact-icon">💼</span>
-        <div class="contact-label">LinkedIn</div>
-        <div class="contact-value">Nasreen S</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>Designed &amp; built with <span>♥</span> — Nasreen S · 2026</p>
+<footer class="footer">
+  <p>© 2026 Nasreen S. Built with intent, not templates.</p>
 </footer>
 
 <script>
@@ -941,7 +355,6 @@
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   }
-
   function closeMenu() {
     hamburger.classList.remove('open');
     mobileMenu.classList.remove('open');
@@ -949,40 +362,30 @@
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
-
   hamburger.addEventListener('click', () => {
     hamburger.classList.contains('open') ? closeMenu() : openMenu();
   });
-
   mobileOverlay.addEventListener('click', closeMenu);
+  document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
-  document.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', closeMenu);
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-
-  // Fade-in animation observer
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
+  // ── FADE-UP SCROLL REVEAL ──
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => revealObserver.observe(el));
 
-  // ── CAROUSEL ──
+  // ── PROJECT CAROUSELS ──
   function getCarousel(el) { return el.closest('.project-carousel'); }
-
   function getCurrentIndex(carousel) {
     const dots = carousel.querySelectorAll('.dot');
-    const activeDot = carousel.querySelector('.dot.active');
-    return Array.from(dots).indexOf(activeDot);
+    return Array.from(dots).indexOf(carousel.querySelector('.dot.active'));
   }
-
   function goToIndex(carousel, index) {
     const dots = carousel.querySelectorAll('.dot');
     const total = dots.length;
@@ -991,55 +394,50 @@
     dots[safeIndex].classList.add('active');
     carousel.querySelector('.carousel-track').style.transform = `translateX(-${safeIndex * 100}%)`;
   }
+  function nextSlide(button) { const c = getCarousel(button); goToIndex(c, getCurrentIndex(c) + 1); }
+  function prevSlide(button) { const c = getCarousel(button); goToIndex(c, getCurrentIndex(c) - 1); }
+  function goToSlide(dot, index) { goToIndex(getCarousel(dot), index); }
 
-  function nextSlide(button, totalSlides) {
-    const carousel = getCarousel(button);
-    goToIndex(carousel, getCurrentIndex(carousel) + 1);
-  }
-
-  function prevSlide(button, totalSlides) {
-    const carousel = getCarousel(button);
-    goToIndex(carousel, getCurrentIndex(carousel) - 1);
-  }
-
-  function goToSlide(dot, index, totalSlides) {
-    const carousel = getCarousel(dot);
-    goToIndex(carousel, index);
-  }
-
-  // Touch swipe for carousels
   document.querySelectorAll('.project-carousel').forEach(carousel => {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-
+    let startX = 0, startY = 0, dragging = false;
     carousel.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      isDragging = true;
+      startX = e.touches[0].clientX; startY = e.touches[0].clientY; dragging = true;
     }, { passive: true });
-
     carousel.addEventListener('touchmove', e => {
-      if (!isDragging) return;
-      const dx = e.touches[0].clientX - startX;
-      const dy = e.touches[0].clientY - startY;
-      if (Math.abs(dx) > Math.abs(dy)) {
-        e.preventDefault();
-      }
+      if (!dragging) return;
+      const dx = e.touches[0].clientX - startX, dy = e.touches[0].clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy)) e.preventDefault();
     }, { passive: false });
-
     carousel.addEventListener('touchend', e => {
-      if (!isDragging) return;
-      isDragging = false;
-      const dx = e.changedTouches[0].clientX - startX;
-      const dy = e.changedTouches[0].clientY - startY;
+      if (!dragging) return;
+      dragging = false;
+      const dx = e.changedTouches[0].clientX - startX, dy = e.changedTouches[0].clientY - startY;
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
-        dx < 0 ? goToIndex(carousel, getCurrentIndex(carousel) + 1)
-                : goToIndex(carousel, getCurrentIndex(carousel) - 1);
+        dx < 0 ? goToIndex(carousel, getCurrentIndex(carousel) + 1) : goToIndex(carousel, getCurrentIndex(carousel) - 1);
       }
     }, { passive: true });
   });
-</script>
 
+  // ── AUTOMATION METRIC COUNTER ──
+  const counter = document.querySelector('[data-target]');
+  if (counter) {
+    const target = parseInt(counter.dataset.target, 10);
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          let current = 0;
+          const step = Math.ceil(target / 40);
+          const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(interval); }
+            counter.textContent = current;
+          }, 30);
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    obs.observe(counter);
+  }
+</script>
 </body>
 </html>
